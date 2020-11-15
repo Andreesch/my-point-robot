@@ -10,8 +10,8 @@ app.listen(process.env.PORT);
 
 const login = process.env.LOGIN;
 const password = process.env.PASSWORD;
-const uid = process.env.UID;
-const uuid = process.env.UUID;
+const uid = process.env.MY_UID;
+const uuid = process.env.MY_UUID;
 
 var auth_token = null;
 var client = null;
