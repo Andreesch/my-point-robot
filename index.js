@@ -16,6 +16,10 @@ const uuid = process.env.MY_UUID;
 var auth_token = null;
 var client = null;
 
+app.get('/home',(req,res) => {
+    return res.send('Hello');
+});
+
 function makeAuthRequest() {
 
     params = {
