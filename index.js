@@ -94,18 +94,30 @@ function scheduleDay() {
     
     cron.schedule(process.env.INIT_DAY_HOUR, function() {
         makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
     });
-    
+
     cron.schedule(process.env.LUNCH_DAY_HOUR, function() {
         makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
     });
 
     cron.schedule(process.env.FIRST_RETURN_DAY_HOUR, function() {
         makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
     });
-    
+
     cron.schedule(process.env.END_DAY_HOUR, function() {
         makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
     });
 }
 
