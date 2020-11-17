@@ -2,29 +2,39 @@ const cron = require('node-cron');
 const express = require('express');
 const axios = require('axios');
 const dotEnv= require('dotenv');
+const router = express.Router();
+const bodyParser = require("body-parser");
 
+const userController = require('controllers/UserController');
+
+//Env Parameters
 dotEnv.config();
 
 app = express();
+
 app.listen(process.env.PORT);
 
-const login = process.env.LOGIN;
-const password = process.env.PASSWORD;
-const uid = process.env.MY_UID;
-const uuid = process.env.MY_UUID;
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
 
-var auth_token = null;
-var client = null;
+app.use(bodyParser.json());
+
+app.route('/users')
+    .get(userController.get)
+    .post(userController.post)
+    .put(userController.put)
+    .delete(userController.delete);
 
 app.get('/home',(req,res) => {
     return res.send('Hello');
 });
 
-function makeAuthRequest() {
+function makeAuthRequest(user) {
 
     params = {
-        'login': login,
-        'password': password
+        'login': user.login,
+        'password': user.password
       }
 
     let res = axios.post('https://api.pontomais.com.br/api/auth/sign_in', params)
@@ -34,14 +44,45 @@ function makeAuthRequest() {
         auth_token = res.data.token;
         client = res.data.client_id;
 
-        makePointRequest();
+        makePointRequest(User, auth_token, client);
     })
     .catch(function (error) {
         console.log(error);
     });
 }
 
-function makePointRequest() {
+function scheduleDay(user) {
+    
+    cron.schedule(user.init_day_hour, function() {
+        makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
+    });
+
+    cron.schedule(user.lunch_day_hour, function() {
+        makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
+    });
+
+    cron.schedule(user.first_return_day_hour, function() {
+        makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
+    });
+
+    cron.schedule(user.end_day_hour, function() {
+        makeAuthRequest();
+    }, {
+        scheduled:true,
+        timezone: "America/Sao_Paulo"
+    });
+}
+
+function makePointRequest(user, auth_token, client) {
     const config = {
         method: 'post',
         url: 'https://api.pontomais.com.br/api/time_cards/register',
@@ -49,14 +90,14 @@ function makePointRequest() {
             'Content-Type': 'application/json',
             'access-token': auth_token,
             'token-type': 'Bearer',
-            'uid': uid,
+            'uid': user.uid,
             'client': client,
             'Host': 'api.pontomais.com.br',
             'Origin': 'https://app.pontomaisweb.com.br',
             'Referer': 'https://app.pontomaisweb.com.br/',
             'Api-Version': '2',
             'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/74.0.3729.131 Safari/537.36; itx)',
-            'uuid': uuid
+            'uuid': user.uuid
         },
         data: {
             "time_card": {
@@ -89,36 +130,3 @@ function makePointRequest() {
         console.log(error);
     });
 }
-
-function scheduleDay() {
-    
-    cron.schedule(process.env.INIT_DAY_HOUR, function() {
-        makeAuthRequest();
-    }, {
-        scheduled:true,
-        timezone: "America/Sao_Paulo"
-    });
-
-    cron.schedule(process.env.LUNCH_DAY_HOUR, function() {
-        makeAuthRequest();
-    }, {
-        scheduled:true,
-        timezone: "America/Sao_Paulo"
-    });
-
-    cron.schedule(process.env.FIRST_RETURN_DAY_HOUR, function() {
-        makeAuthRequest();
-    }, {
-        scheduled:true,
-        timezone: "America/Sao_Paulo"
-    });
-
-    cron.schedule(process.env.END_DAY_HOUR, function() {
-        makeAuthRequest();
-    }, {
-        scheduled:true,
-        timezone: "America/Sao_Paulo"
-    });
-}
-
-scheduleDay();
