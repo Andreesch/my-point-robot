@@ -7,6 +7,13 @@ const bodyParser = require("body-parser");
 //Env Parameters
 dotEnv.config();
 
+const CaseSensitivePathsPlugin = require('case-sensitive-paths-webpack-plugin');
+const webpackConfig = {
+    plugins: [
+        new CaseSensitivePathsPlugin()
+    ]
+}
+
 //Routes
 const personRoute = require('/app/routes/userRoute');
 

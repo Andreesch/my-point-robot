@@ -24,6 +24,7 @@
     "node": "12.16.1"
   },
   "devDependencies": {
-    "ava": "^3.13.0"
+    "ava": "^3.13.0",
+    "case-sensitive-paths-webpack-plugin": "^2.3.0"
   }
 }
