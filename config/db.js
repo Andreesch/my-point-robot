@@ -3,7 +3,7 @@ const dotEnv= require('dotenv');
 
 dotEnv.config();
 
-var uri = process.env.URI;
+var uri = process.env.MONGO_URI;
 
 mongoose.connect(uri, {user: process.env.MONGO_DB_USERNAME, pass: process.env.MONGO_DB_PASSWORD, useNewUrlParser: true});
 
