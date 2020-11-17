@@ -16,7 +16,6 @@ var userSchema = new Schema({
     uuid: String,
     init_day_hour: String,
     lunch_day_hour: String,
-    init_day_hour: String,
     first_return_day_hour: String,
     end_day_hour: String
 });

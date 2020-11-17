@@ -12,22 +12,22 @@ module.exports = new class UserRepository {
         return User.findById(id);
     }
 
-    create(User) {
-        return User.create(User);
+    create(user) {
+        return User.create(user);
     }
 
-    update(id, User) {
+    update(id, user) {
 
         const updatedUser = {
-            login: User.login,
-            password: User.password,
-            uid: User.uid,
-            uuid: User.uuid,
-            init_day_hour: User.init_day_hour,
-            lunch_day_hour: User.lunch_day_hour,
-            init_day_hour: User.init_day_hour,
-            first_return_day_hour: User.first_return_day_hour,
-            end_day_hour: User.end_day_hour
+            login: user.login,
+            password: user.password,
+            uid: user.uid,
+            uuid: user.uuid,
+            init_day_hour: user.init_day_hour,
+            lunch_day_hour: user.lunch_day_hour,
+            init_day_hour: user.init_day_hour,
+            first_return_day_hour: user.first_return_day_hour,
+            end_day_hour: user.end_day_hour
         }
 
         return User.findByIdAndUpdate(id, updatedUser, { new: true });

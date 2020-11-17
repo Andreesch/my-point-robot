@@ -1,50 +1,58 @@
 'use strict';
 
 const UserRepository = require('../repositories/UserRepository');
-const index = require('../index.js');
+const Point = require('../Point');
 
-module.exports = new class UserController {
+exports.register = (req, res, next) => {
+    UserRepository.getById(req.params.id)
+        .then((User) => {
+            Point.scheduleDay(User);
+            res.status(200).send("Registro realizado com sucesso!");
+        }).catch(err => res.status(500).send(err))
+}; 
 
-    get = (req, res, next) => {
-        UserRepository.getAll()
-            .then((User) => {
-                res.status(200).send(User);
-            }).catch(err => res.status(500).send(err))
-    };
+exports.get = (req, res, next) => {
+    UserRepository.getAll()
+        .then((User) => {
+            res.status(200).send(User);
+        }).catch(err => res.status(500).send(err))
+}; 
 
-    getById = (req, res, next) => {
+exports.getById = (req, res, next) => {
 
-        UserRepository.getById(req.params.id)
-            .then((User) => {
-                res.status(200).send(User);
-            }).catch(err => res.status(500).send(err))
-    };
+    UserRepository.getById(req.params.id)
+        .then((User) => {
+            res.status(200).send(User);
+        }).catch(err => res.status(500).send(err))
+};
 
-    post = (req, res, next) => {
-        const p = req.body;
+exports.post = (req, res, next) => {
+    const p = req.body;
 
-        UserRepository.create(p)
-            .then((User) => {
-                res.status(200).send(User);
-                index.scheduleDay(user);
-            }).catch(err => res.status(500).send(err))
-    };
+    if (p.login == null) {
+        res.status(403).send("Parâmetros inválidos");
+    }
 
-    put = (req, res, next) => {
-        const p = req.body;
+    UserRepository.create(p)
+        .then((User) => {
+            res.status(200).send(User);
+            //index.scheduleDay(user);
+            console.log(User);
+        }).catch(err => res.status(500).send(err))
+};
 
-        UserRepository.update(req.params.id, p)
-            .then((User) => {
-                res.status(201).send(User);
-            }).catch(err => res.status(500).send(err))
-    };
+exports.put = (req, res, next) => {
+    const p = req.body;
 
-    delete = (req, res, next) => {
-        UserRepository.delete(req.params.id)
-            .then((User) => {
-                res.status(200).send('delete succeeded!');
-            }).catch(err => console.error.bind(console, `Error ${err}`))
-    };
-}
+    UserRepository.update(req.params.id, p)
+        .then((User) => {
+            res.status(201).send(User);
+        }).catch(err => res.status(500).send(err))
+};
 
-module.exports = UserController;
+exports.delete = (req, res, next) => {
+    UserRepository.delete(req.params.id)
+        .then((User) => {
+            res.status(200).send('delete succeeded!');
+        }).catch(err => console.error.bind(console, `Error ${err}`))
+};
