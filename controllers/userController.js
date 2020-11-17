@@ -1,7 +1,7 @@
 'use strict';
 
-const UserRepository = require('../repositories/UserRepository');
-const Point = require('../Point');
+const UserRepository = require('/app/repositories/UserRepository');
+const Point = require('/app/Point');
 
 exports.register = (req, res, next) => {
     UserRepository.getById(req.params.id)

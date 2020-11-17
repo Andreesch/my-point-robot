@@ -1,6 +1,6 @@
 'use strict';
 var mongoose = require('mongoose')
-var User = require('../config/db');
+var User = require('/app/config/db');
 
 module.exports = new class UserRepository {
 

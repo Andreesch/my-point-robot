@@ -8,7 +8,7 @@ const bodyParser = require("body-parser");
 dotEnv.config();
 
 //Routes
-const personRoute = require('./routes/userRoute');
+const personRoute = require('/app/routes/userRoute');
 
 app = express();
 
