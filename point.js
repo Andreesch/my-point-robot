@@ -1,6 +1,6 @@
 const cron = require('node-cron');
 
-module.exports = new class UserRepository {
+module.exports = new class Point {
     
     scheduleDay(user) {
         console.log("Criando agendamento para o usuario com login:" +user.login);
