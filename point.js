@@ -1,3 +1,5 @@
+const cron = require('node-cron');
+
 module.exports = new class UserRepository {
     
     scheduleDay(user) {
