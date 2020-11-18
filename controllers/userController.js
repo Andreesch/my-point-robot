@@ -14,6 +14,8 @@ exports.register = (req, res, next) => {
 exports.get = (req, res, next) => {
     UserRepository.getAll()
         .then((User) => {
+            User.login = "";
+            User.password = "";
             res.status(200).send(User);
         }).catch(err => res.status(500).send(err))
 }; 
@@ -22,6 +24,8 @@ exports.getById = (req, res, next) => {
 
     UserRepository.getById(req.params.id)
         .then((User) => {
+            User.login = "";
+            User.password = "";
             res.status(200).send(User);
         }).catch(err => res.status(500).send(err))
 };
